@@ -104,4 +104,26 @@ router.post("/addWorkout", async (req, res) => {
 
 });
 
+router.get("workouts/:userName" , async ( req , res ) => {
+    const userName = req.params.userName;
+
+    const workouts = await workoutModel.find( {
+        userName : userName
+    });
+
+    res.json({
+        workouts
+    });
+});
+
+router.delete("/workout/:id" , async ( req , res ) => {
+    const id = req.params.id;
+
+    await workoutModel.findByIdAndDelete(id);
+
+    res.json({
+        message : "workout deleted"
+    });
+});
+
 export default router;
