@@ -126,4 +126,27 @@ router.delete("/workout/:id" , async ( req , res ) => {
     });
 });
 
+router.get("/leaderboard" , async ( req , res ) => {
+    try{
+        const leaderboard = await workoutModel.aggregate([
+            {
+                $group: {
+                    _id : "$userName",
+                    totalWeight : { $sum , "$weight"}
+                }
+            },
+            {
+                $sort: {totalWeight: -1}
+            }
+        ]);
+        res.json({
+            leaderboard
+        });
+    }catch(e){
+        res.status(500).json({
+            message : "Error fetching leaderboard"
+        });
+    }
+});
+
 export default router;
